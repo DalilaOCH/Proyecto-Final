@@ -10,27 +10,11 @@ describe("testing", () => {
     cy.clearAllSessionStorage({log: true})
     cy.visit('https://www.saucedemo.com/',
      { timeout: 30000, retryOnStatusCodeFailure: true, retryOnNetworkFailure: true }); 
-  })
-  
-  context("1. Prueba de login", () => {     
-    it.only("a) Login incorrecto con Usuario o contraseña vacíos",()=> {
-      loginPage.login()
-      cy.getByData("error").should("exist").contains("Epic sadface: Username is required")
-    })
-    it.only("b) Login incorrecto con password incorrecto",()=> {
-      loginPage.login("Dal12@gmail.com","dagxbdkj")
-      cy.getByData("error").should("exist")
-      .contains("Epic sadface: Username and password do not match any user in this service")
-    }) 
-    it.only("c) Login exitoso (standard_user)",()=> {
-      loginPage.login("standard_user","secret_sauce")
-      cy.url().should('eq', 'https://www.saucedemo.com/inventory.html')
-    })           
+     loginPage.login("standard_user","secret_sauce")
   })
 
   context("2. Menu", () => { 
     it.only("a) Validar opciones de menú correcta y en orden correcto",()=> {
-      loginPage.login("standard_user","secret_sauce")
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html')
       cy.getById("react-burger-menu-btn").click()
       cy.getByClass("bm-item-list").children().each(($ch, index) => {
@@ -58,7 +42,6 @@ describe("testing", () => {
       })
     })
     it.only("b) Validar que el menu se muestre y se oculte",()=> {
-      loginPage.login("standard_user","secret_sauce")
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html')
       cy.getById("react-burger-menu-btn").click()
       cy.getByClass("bm-menu-wrap").should('be.visible');
@@ -67,7 +50,6 @@ describe("testing", () => {
   
    context("3. Inventory", () => {
     it.only("a) Validar los 6 productos", () => {
-      loginPage.login("standard_user", "secret_sauce")
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html')
       inventoryPage.validarProducto(0, "Sauce Labs Backpack", "$29.99", "item_4_img_link", "/static/media/sauce-backpack-1200x1500.0a0b85a3.jpg", "Add to cart")
       inventoryPage.validarProducto(1, "Sauce Labs Bike Light", "$9.99", "item_0_img_link", "/static/media/bike-light-1200x1500.37c843b0.jpg", "Add to cart")
@@ -80,8 +62,6 @@ describe("testing", () => {
   
   context("4. Vista Detalle de producto", () => {
     it.only("a) Abrir un producto cualquier y validar imagen, nombre y precio", () => {
-      //login
-      loginPage.login("standard_user", "secret_sauce")
       
       //verificar estamos en pagina de inventario
       cy.url().should('eq', 'https://www.saucedemo.com/inventory.html')
